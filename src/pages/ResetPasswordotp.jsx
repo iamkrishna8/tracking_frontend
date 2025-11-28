@@ -18,7 +18,7 @@ const ResetPasswordotp = () => {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/users/send-reset-otp",
+        "https://tracking-backend-8.onrender.com/api/v1/users/send-reset-otp",
         { email }
       );
 
