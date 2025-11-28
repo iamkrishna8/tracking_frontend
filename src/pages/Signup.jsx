@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/users/signup",
+        "https://tracking-backend-8.onrender.com/api/v1/users/signup",
         {
           name,
           email,
