@@ -17,10 +17,14 @@ const ResetPasswordotp = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        "https://tracking-backend-8.onrender.com/api/v1/users/send-reset-otp",
-        { email }
-      );
+const response = await axios.post(
+  "https://tracking-backend-8.onrender.com/api/v1/users/send-reset-otp",
+  { email },
+  {
+    withCredentials: true, // 🔥 REQUIRED FOR CORS
+  }
+);
+
 
       toast.success("OTP sent to your email!");
 
