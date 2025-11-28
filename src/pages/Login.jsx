@@ -9,28 +9,45 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigateto = useNavigate();
+  const navigate = useNavigate();
+
+  // Function to extract error message safely
+  const getErrorMessage = (error) => {
+    if (error.response) {
+      return (
+        error.response.data?.message ||
+        error.response.data?.error ||
+        error.response.data?.errors?.[0]?.msg || // zod, express-validator, mongoose
+        error.response.data?.errors?.[0] ||
+        "Something went wrong"
+      );
+    }
+    return "Network Error: Server not reachable";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side validations
+    if (!email || !password) {
+      return toast.error("Email and Password are required");
+    }
+
     try {
       const { data } = await axios.post(
         "https://tracking-backend-8.onrender.com/api/v1/users/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
+        { email, password },
+        { withCredentials: true }
       );
-      toast.success("Login Successful");
+
+      toast.success("Login Successful!");
+
       console.log(data);
-      setTimeout(() => {
-        navigateto("/");
-      }, 1500);
+
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      const msg = getErrorMessage(error);
+      toast.error(msg);
       console.log(error);
     }
   };
@@ -39,7 +56,7 @@ const Login = () => {
     <>
       <Navbar />
 
-      {/* Added pt-10 for spacing */}
+      {/* Fixed spacing below navbar */}
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-indigo-200 pt-20">
         <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl border border-indigo-50">
           {/* LOGO */}
@@ -68,7 +85,6 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  required
                   className="w-full outline-none"
                 />
               </div>
@@ -88,7 +104,6 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  required
                   className="w-full outline-none"
                 />
               </div>
@@ -112,7 +127,7 @@ const Login = () => {
           </form>
 
           <p className="text-center mt-5 text-sm text-slate-600">
-            Don't have an account?{" "}
+            Don’t have an account?{" "}
             <a
               href="/signup"
               className="text-indigo-600 font-medium hover:underline"
