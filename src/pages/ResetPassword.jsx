@@ -25,10 +25,17 @@ const ResetPassword = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "https://tracking-backend-8.onrender.com/api/v1/users/reset-password",
-        { email, otp, newpassword: newPassword }
-      );
+    const res = await axios.post(
+  "https://tracking-backend-8.onrender.com/api/v1/users/reset-password",
+  { email, otp, newpassword: newPassword },
+  {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+);
+
 
       toast.success("Password reset successfully!");
 
