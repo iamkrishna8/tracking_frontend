@@ -26,7 +26,7 @@ const ResetPassword = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:4000/api/v1/users/reset-password",
+        "https://tracking-backend-8.onrender.com/api/v1/users/reset-password",
         { email, otp, newpassword: newPassword }
       );
 
